@@ -1025,9 +1025,11 @@ func (k *kataAgent) constraintGRPCSpec(grpcSpec *grpc.Spec, passSeccomp bool) {
 		grpcSpec.Linux.Seccomp = nil
 	}
 
-	// Disable selinux
+	// Disable SELinux inside of the virtual machine, the label will apply
+	// to the KVM process
 	if grpcSpec.Process.SelinuxLabel != "" {
-		k.Logger().Warn("Selinux label specified in config, but not supported in Kata yet, running container without selinux")
+		k.Logger().Info("SELinux label specified in config, will be applied to the virtual machine")
+		k.Logger().Info("No SELinux label be applied inside the virtual machine")
 		grpcSpec.Process.SelinuxLabel = ""
 	}
 

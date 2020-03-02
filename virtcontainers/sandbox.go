@@ -1000,6 +1000,11 @@ func (s *Sandbox) startVM() (err error) {
 
 	s.Logger().Info("Starting VM")
 
+	ociSpec := s.GetPatchedOCISpec()
+	if ociSpec.Process.SelinuxLabel != "" {
+		s.config.HypervisorConfig.ProcessLabel = ociSpec.Process.SelinuxLabel
+	}
+
 	if err := s.network.Run(s.networkNS.NetNsPath, func() error {
 		if s.factory != nil {
 			vm, err := s.factory.GetVM(ctx, VMConfig{

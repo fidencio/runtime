@@ -498,6 +498,17 @@
   revision = "a1b50f621a48ad13f8f696a162f684a241307db0"
 
 [[projects]]
+  digest = "1:5f0bb8f995cb3bb6b9d76dfaeff4b5a96f3072f06d2f300e20ec6aea3c8d9e05"
+  name = "github.com/opencontainers/selinux"
+  packages = [
+    "go-selinux",
+    "go-selinux/label",
+  ]
+  pruneopts = "NUT"
+  revision = "31f70552238c5e017d78c3f1ba65e85f593f48e0"
+  version = "v1.3.3"
+
+[[projects]]
   digest = "1:7da29c22bcc5c2ffb308324377dc00b5084650348c2799e573ed226d8cc9faf0"
   name = "github.com/opentracing/opentracing-go"
   packages = [
@@ -798,6 +809,7 @@
     "github.com/opencontainers/runc/libcontainer/system",
     "github.com/opencontainers/runc/libcontainer/utils",
     "github.com/opencontainers/runtime-spec/specs-go",
+    "github.com/opencontainers/selinux/go-selinux/label",
     "github.com/opentracing/opentracing-go",
     "github.com/opentracing/opentracing-go/log",
     "github.com/pkg/errors",
