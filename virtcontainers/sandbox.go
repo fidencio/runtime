@@ -557,6 +557,11 @@ func newSandbox(ctx context.Context, sandboxConfig SandboxConfig, factory Factor
 		}
 	}()
 
+	spec := s.GetPatchedOCISpec()
+	if spec != nil && spec.Process.SelinuxLabel != "" {
+		sandboxConfig.HypervisorConfig.ProcessLabel = spec.Process.SelinuxLabel
+	}
+
 	if useOldStore(ctx) {
 		vcStore, err := store.NewVCSandboxStore(ctx, s.id)
 		if err != nil {
@@ -999,11 +1004,6 @@ func (s *Sandbox) startVM() (err error) {
 	defer span.Finish()
 
 	s.Logger().Info("Starting VM")
-
-	ociSpec := s.GetPatchedOCISpec()
-	if ociSpec.Process.SelinuxLabel != "" {
-		s.config.HypervisorConfig.ProcessLabel = ociSpec.Process.SelinuxLabel
-	}
 
 	if err := s.network.Run(s.networkNS.NetNsPath, func() error {
 		if s.factory != nil {
