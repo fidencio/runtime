@@ -336,6 +336,11 @@ func (clh *cloudHypervisor) startSandbox(timeout int) error {
 		return errors.New("Missing virtiofsd configuration")
 	}
 
+	if err := label.SetProcessLabel(clh.config.ProcessLabel); err != nil {
+		return err
+	}
+	defer label.SetProcessLabel("")
+
 	if clh.config.SharedFS == config.VirtioFS {
 		clh.Logger().WithField("function", "startSandbox").Info("Starting virtiofsd")
 		pid, err := clh.virtiofsd.Start(ctx)
@@ -346,11 +351,6 @@ func (clh *cloudHypervisor) startSandbox(timeout int) error {
 	} else {
 		return errors.New("cloud-hypervisor only supports virtio based file sharing")
 	}
-
-	if err := label.SetProcessLabel(clh.config.ProcessLabel); err != nil {
-		return err
-	}
-	defer label.SetProcessLabel("")
 
 	var strErr string
 	strErr, pid, err := clh.LaunchClh()

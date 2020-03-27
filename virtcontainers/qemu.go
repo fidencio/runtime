@@ -795,17 +795,17 @@ func (q *qemu) startSandbox(timeout int) error {
 		}
 	}()
 
+	if err := label.SetProcessLabel(q.config.ProcessLabel); err != nil {
+		return err
+	}
+	defer label.SetProcessLabel("")
+
 	if q.config.SharedFS == config.VirtioFS {
 		err = q.setupVirtiofsd()
 		if err != nil {
 			return err
 		}
 	}
-
-	if err := label.SetProcessLabel(q.config.ProcessLabel); err != nil {
-		return err
-	}
-	defer label.SetProcessLabel("")
 
 	var strErr string
 	strErr, err = govmmQemu.LaunchQemu(q.qemuConfig, newQMPLogger())
